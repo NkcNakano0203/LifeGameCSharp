@@ -6,12 +6,10 @@ namespace LifeGame
     {
         static void Main(string[] args)
         {
-            int height;
-            int width;
+            int[,] init = InitSetting();
+            int height = init.GetLength(0);
+            int width = init.GetLength(1);
             int generationCount = 0;
-
-            (width, height) = InitSetting();
-            int[,] init = new int[height, width];
 
             Random random = new Random();
             for (int i = 0; i < height; i++)
@@ -24,7 +22,7 @@ namespace LifeGame
             }
 
             LifeGame lifeGame = new LifeGame(height, width);
-            lifeGame.isAliveCell = Int2Bool(init);
+            lifeGame.aliveCell = Int2Bool(init);
 
             while (true)
             {
@@ -32,7 +30,7 @@ namespace LifeGame
                 Console.WriteLine($"{generationCount}世代目");
                 lifeGame.RenderState();
                 Thread.Sleep(700);
-                lifeGame.isAliveCell = lifeGame.NextGeneration();
+                lifeGame.aliveCell = lifeGame.NextGeneration();
                 generationCount++;
             }
         }
@@ -40,8 +38,8 @@ namespace LifeGame
         /// <summary>
         /// 初期設定
         /// </summary>
-        /// <returns>(width,height)</returns>
-        static (int, int) InitSetting()
+        /// <returns>[height, width]</returns>
+        static int[,] InitSetting()
         {
             int width;
             int height;
@@ -49,7 +47,7 @@ namespace LifeGame
 
             Console.Write("横の長さは？：");
             parseResult = int.TryParse(Console.ReadLine(), out width);
-            if (!parseResult)
+            if (parseResult is false)
             {
                 Console.WriteLine("数字を入力してね！");
                 return InitSetting();
@@ -57,13 +55,13 @@ namespace LifeGame
 
             Console.Write("縦の高さは？：");
             parseResult = int.TryParse(Console.ReadLine(), out height);
-            if (!parseResult)
+            if (parseResult is false)
             {
                 Console.WriteLine("数字を入力してね！");
                 return InitSetting();
             }
 
-            return (width, height);
+            return new int[height, width];
         }
 
         static bool[,] Int2Bool(int[,] ints)
