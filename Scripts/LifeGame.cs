@@ -8,7 +8,7 @@
         /// <summary>
         /// 座標のcellの生存状態
         /// </summary>
-        public bool[,] isAliveCell;
+        public bool[,] aliveCell;
 
         /// <summary>
         /// 全体の大きさを決めるコンストラクタ
@@ -20,7 +20,7 @@
             this.heightSize = heightSize;
             this.widthSize = widthSize;
 
-            isAliveCell = new bool[heightSize, widthSize];
+            aliveCell = new bool[heightSize, widthSize];
         }
 
         /// <summary>
@@ -44,7 +44,7 @@
             {
                 for (int y = under; y <= up; y++)
                 {
-                    if (!isAliveCell[y, x])
+                    if (aliveCell[y, x] is false)
                     {
                         continue;
                     }
@@ -53,7 +53,7 @@
                 }
             }
 
-            if (isAliveCell[height, width])
+            if (aliveCell[height, width])
             {
                 // 周囲8マスの生存cell数
                 int aroundLifeCount = LifeCount - 1;
@@ -95,7 +95,7 @@
             {
                 for (int j = 0; j < widthSize; j++)
                 {
-                    Console.Write(isAliveCell[i, j] ? '■' : '□');
+                    Console.Write(aliveCell[i, j] ? '■' : '□');
                 }
                 Console.WriteLine();
             }
