@@ -12,18 +12,19 @@ namespace LifeGame
             int generationCount = 0;
 
             Random random = new Random();
-            for (int i = 0; i < height; i++)
+            for (int y = 0; y < height; y++)
             {
-                for (int j = 0; j < width; j++)
+                for (int x = 0; x < width; x++)
                 {
                     // ランダムに0,1を代入する
-                    init[i, j] = random.Next(2);
+                    init[y, x] = random.Next(2);
                 }
             }
 
             LifeGame lifeGame = new LifeGame(height, width);
             lifeGame.aliveCell = Int2Bool(init);
 
+            // 自動で世代を進める
             while (true)
             {
                 Console.Clear();
@@ -45,21 +46,19 @@ namespace LifeGame
             int height;
             bool parseResult;
 
-            Console.Write("横の長さは？：");
-            parseResult = int.TryParse(Console.ReadLine(), out width);
-            if (parseResult is false)
+            do
             {
-                Console.WriteLine("数字を入力してね！");
-                return InitSetting();
-            }
+                Console.Write("横の長さは？：");
+                parseResult = int.TryParse(Console.ReadLine(), out width);
+                if (!parseResult) Console.WriteLine("数字を入力してね！");
+            } while (!parseResult);
 
-            Console.Write("縦の高さは？：");
-            parseResult = int.TryParse(Console.ReadLine(), out height);
-            if (parseResult is false)
+            do
             {
-                Console.WriteLine("数字を入力してね！");
-                return InitSetting();
-            }
+                Console.Write("縦の高さは？：");
+                parseResult = int.TryParse(Console.ReadLine(), out height);
+                if (!parseResult) Console.WriteLine("数字を入力してね！");
+            } while (!parseResult);
 
             return new int[height, width];
         }
@@ -70,14 +69,14 @@ namespace LifeGame
             int widthLength = ints.GetLength(1);
             bool[,] cellStates = new bool[heightLength, widthLength];
 
-            for (int i = 0; i < heightLength; i++)
+            for (int y = 0; y < heightLength; y++)
             {
-                for (int j = 0; j < widthLength; j++)
+                for (int x = 0; x < widthLength; x++)
                 {
                     // 0,1以外が入っていたらエラーを吐く
-                    if (!(ints[i, j] == 0 || ints[i, j] == 1)) throw new ArgumentException();
+                    if (!(ints[y, x] == 0 || ints[y, x] == 1)) throw new ArgumentException();
 
-                    cellStates[i, j] = ints[i, j] == 1;
+                    cellStates[y, x] = ints[y, x] == 1;
                 }
             }
             return cellStates;
